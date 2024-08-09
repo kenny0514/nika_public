@@ -11,12 +11,16 @@ import gc
 import aiohttp, time
 import ccxt.async_support as ccxt_async
 import asyncio
+import creds
 
 BASE_URL = "https://data.binance.vision/data/"
 
-class BinanceDownloader ():
-    def __init__ (self):
-        self.ccxt = ccxt_async.binance(config={'enableRateLimit': False,'options': {'defaultType': 'spot'},})
+class BinanceData ():
+    def __init__ (self, use_api_key = False):
+        if use_api_key:
+            self.ccxt = ccxt_async.binance(config={'apiKey': creds.api_key, 'secret': creds.api_secret, 'enableRateLimit': False,'options': {'defaultType': 'spot'},})
+        else:
+            self.ccxt = ccxt_async.binance(config={'enableRateLimit': False,'options': {'defaultType': 'spot'},})
         self.kaiko = None
 
     async def get_tickers (self, include_delisted = False):
@@ -84,6 +88,23 @@ class BinanceDownloader ():
         df.columns = ticker_list
         df = df.iloc[-numBars:,:]
         return df
+
+
+# ------------------------------------------------------------           
+# 입출금 관련
+    async def get_coin_status (self, ticker):
+        coin_status = await self.ccxt.sapi_get_capital_config_getall()
+        coin_status = {coin['coin']:coin for coin in coin_status}
+        return coin_status[ticker]
+
+    async def can_deposit (self,ticker):
+        coin_status = await self.get_coin_status(ticker)
+        return coin_status['depositAllEnable']
+    
+    async def can_withdraw (self,ticker):
+        coin_status = await self.get_coin_status(ticker)
+        return coin_status['withdrawAllEnable']
+
 
 # ------------------------------------------------------------           
 # For Full Historical Files

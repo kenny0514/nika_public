@@ -1,12 +1,16 @@
 import requests
-import creds as creds
 import pandas as pd
 import ccxt.async_support as ccxt_async
-from Utilities.ip_rotator import ApiGateway
 import aiohttp, asyncio, time, os
+import requests, uuid, jwt
+from urllib.parse import urlencode, unquote
+
+# Private
+from Utilities.ip_rotator import ApiGateway
+import creds
 
 
-class UpbitDownloader ():
+class UpbitData ():
     def __init__ (self, rotate_ip=False):
         self.rotate_ip = rotate_ip
         self.ccxt = ccxt_async.upbit(config={'apiKey': creds.upbit_api_key, 'secret': creds.upbit_api_secret, 'enableRateLimit': False})
@@ -152,3 +156,27 @@ class UpbitDownloader ():
         df.index = df['market']
         df.index = df.index.str.replace("KRW-","")
         return df
+    
+    async def get_coin_status(self, ticker):
+        server_url = 'https://api.upbit.com/v1/status/wallet'
+        payload = {'access_key': creds.upbit_api_key,'nonce': str(uuid.uuid4()),}
+        jwt_token = jwt.encode(payload, creds.upbit_api_secret)
+        authorization = f'Bearer {jwt_token}'
+        headers = {'Authorization': authorization,}
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get(server_url, headers=headers) as response:
+                coin_status = await response.json()
+
+        coin_status = {coin['currency']: coin for coin in coin_status}
+        return coin_status[ticker]
+    
+    async def can_deposit (self,ticker):
+        coin_status = await self.get_coin_status(ticker)
+        wallet_state = coin_status['wallet_state']
+        return (wallet_state=='working' or wallet_state=='deposit_only')
+    
+    async def can_withdraw (self,ticker):
+        coin_status = await self.get_coin_status(ticker)
+        wallet_state = coin_status['wallet_state']
+        return (wallet_state=='working' or wallet_state=='withdraw_only')    
