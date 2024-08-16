@@ -1,4 +1,4 @@
-from Data.BinanceDownloader import BinanceDownloader
+from Data.BinanceData import BinanceData
 import aiohttp, requests
 import mplfinance as mpf
 import pandas as pd
@@ -6,7 +6,7 @@ import ccxt as ccxt_sync
 import creds as creds
 import numpy as np
 import matplotlib.pyplot as plt
-import random, datetime, time
+import random, datetime, time, asyncio
 
 
 exchange = ccxt_sync.binance(config={'apiKey': creds.api_key, 'secret': creds.api_secret, 'enableRateLimit': False,'options': {'defaultType': 'swap'},})
@@ -52,38 +52,85 @@ async def get_cmc_slug(ticker):
         slug = data[0]['slug']    
     return slug
 
+async def get_cmc_slug(ticker, max_retries=3):
+    params = {'symbol': ticker}
+    headers = {'X-CMC_PRO_API_KEY': 'b34d6ecf-4318-463e-9200-453a03f48d60'}
+    retries = 0
+
+    while retries < max_retries:
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map', params=params, headers=headers) as response:
+                    response.raise_for_status()
+                    data = await response.json()
+                    data = sorted(data['data'], key=lambda x: x['rank'] if x['rank'] is not None else float('inf'))
+
+                slug = data[0]['slug']
+                return slug
+        except Exception as e:
+            retries += 1
+            print(f"Attempt {retries} failed for {ticker}. Error: {str(e)}")
+            if retries < max_retries:
+                print("Retrying in 5 seconds...")
+                await asyncio.sleep(5)
+            else:
+                print(f"Max retries reached. Could not retrieve slug for {ticker}.")
+                return None
+
+            
 async def get_cmc_id(ticker, session = None):
     params = {'symbol': ticker}
     headers = {'X-CMC_PRO_API_KEY': 'b34d6ecf-4318-463e-9200-453a03f48d60'}
-
-    async with aiohttp.ClientSession() as session:
-        
-        async with session.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map', params=params, headers=headers) as response:
-            response.raise_for_status()
-            data = await response.json()
-            data = sorted(data['data'], key=lambda x: x['rank'] if x['rank'] is not None else float('inf'))
-
-        slug = data[0]['id']    
-    return slug
-
-async def get_cmc_volume_share (ticker, exchange='binance'):
-    slug = await get_cmc_slug(ticker)
-    url = f'https://api.coinmarketcap.com/data-api/v3/cryptocurrency/market-pairs/latest?slug={slug}&start=1&limit=10&category=spot&centerType=all&sort=cmc_rank_advanced&direction=desc&spotUntracked=true'
     try:
         async with aiohttp.ClientSession() as session:
+            async with session.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map', params=params, headers=headers) as response:
+                response.raise_for_status()
+                data = await response.json()
+                data = sorted(data['data'], key=lambda x: x['rank'] if x['rank'] is not None else float('inf'))
 
+            slug = data[0]['id']    
+        return slug
+    except Exception as e:
+        print("slug not found for",ticker, " ", str(e))
+        pass
+
+
+
+
+async def get_cmc_market_table (ticker):
+    slug = await get_cmc_slug(ticker)
+    if slug is not None:
+            
+        url = f'https://api.coinmarketcap.com/data-api/v3/cryptocurrency/market-pairs/latest?slug={slug}&start=1&limit=30&category=spot&centerType=all&sort=cmc_rank_advanced&direction=desc&spotUntracked=true'
+        async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 response.raise_for_status()
                 markets = await response.json()
                 markets = markets['data']['marketPairs']
-                for market in markets:
-                    if market['exchangeSlug'] == exchange:
-                        return round(market['volumePercent'],2)
-        print(f"No {exchange} found for {ticker}")
-        return 0
-    except:
-        print(f"Error with with cmc volume share request: {ticker}")
-        return 0
+
+        df_markets = pd.DataFrame(markets)
+        columns_to_isolate = ['exchangeName', 'volumePercent'] 
+        df_markets = df_markets[columns_to_isolate]
+        return df_markets
+
+async def get_cmc_volume_share (ticker, exchange_list = ['Binance', 'Binance TR']):
+    df_markets = await get_cmc_market_table(ticker)
+    if df_markets is not None:
+        vol_share = df_markets[df_markets['exchangeName'].isin(exchange_list)]['volumePercent'].sum()
+        return vol_share
+
+
+async def get_cmc_dominant_exchange (ticker):
+    df_markets = await get_cmc_market_table(ticker)
+    if df_markets is not None:
+        df_markets['exchangeName'] = df_markets['exchangeName'].replace('Binance TR', 'Binance')
+        df_markets = df_markets.groupby('exchangeName', as_index=False).sum().sort_values(by='volumePercent', ascending=False)
+        dominant_exchange = df_markets.iloc[0]
+        return dominant_exchange['exchangeName'], dominant_exchange['volumePercent']
+
+        
+
+
                 
 async def get_cmc_volume_backdated(ticker, date, lookback_days = 30):
     endDate = int(date.timestamp())
@@ -100,8 +147,10 @@ async def get_cmc_volume_backdated(ticker, date, lookback_days = 30):
         print(f"No cmc historical quotes fetched for {ticker}")
         return None
 
-async def get_cmc_marketcap(ticker, date):
+async def get_cmc_marketcap(ticker, date = None):
     # Gets marketcap of the day before
+    if date is None:
+        date = pd.to_datetime(time.time(),unit='s')
     endDate = int(date.timestamp()- 60*60*24*1)
     startDate = int(endDate - 60*60*24*1)
     id = await get_cmc_id(ticker)
@@ -117,7 +166,7 @@ async def get_cmc_marketcap(ticker, date):
 # Other
 
 def plot_events (event_list, num_days):
-    bd = BinanceDownloader()
+    bd = BinanceData()
 
     for event in event_list:
         time0 = event['date']
@@ -155,59 +204,56 @@ def plot_events (event_list, num_days):
             df_ohlcv = np.log(df_ohlcv)
 
             mpf.plot(df_ohlcv, type='candle', figsize = (16,8), title = f"{ticker} - {time0}");plt.show()
-            
-def get_event_returns (ticker, time0, timeframe = '5m', hold_periods = [10/60, 6, 24, 48], low = 6, plot=False, use_log = False, show_vertical = False):
-    bd = BinanceDownloader()
+
+async def get_event_returns (ticker, time0, asset_type, timeframe = '5m', hold_periods = [10/60, 6, 24, 48], plot=False, use_pct = False, use_log = False, show_vertical = False):
+    
+    bd = BinanceData()
 
     #1: Secure OHLCV
     spot_ticker, futures_ticker = get_trading_symbol_v2(ticker)
     if spot_ticker is None and futures_ticker is None:
         return None
     
+    if asset_type == 'futures':
+        ticker = futures_ticker
+    elif asset_type == 'spot':
+        ticker = spot_ticker
+    else:
+        raise ValueError("invalid asset type")
+    
     df_ohlcv = pd.DataFrame()
     try:
         for n in np.arange(max(hold_periods)//24+1):
             date = time0 + pd.Timedelta(days = n)
-            df_ohlcv = pd.concat([df_ohlcv,bd.get_ohlcv_daily_(ticker = futures_ticker, date = date.strftime("%Y-%m-%d"), timeframe = timeframe, type='futures')], axis=0)
-        asset_type = 'futures'
+            df_out = await bd.get_ohlcv_daily_single(ticker, date, timeframe = timeframe, type=asset_type)
+            df_ohlcv = pd.concat([df_ohlcv, df_out], axis=0)
+
+        result = {'asset': asset_type}
+        
+        #2: Calculate Returns
+        t0 = np.searchsorted(df_ohlcv.index, time0)
+        t0c = df_ohlcv.index[t0] # candle after the first one
+        t0 = df_ohlcv.index[t0-1]
+        p0 = df_ohlcv.Open[t0]
+        rets = []
+        lows = []
+        highs = []
+        hps = []
+        for hp in hold_periods:
+            t1 = t0 + pd.Timedelta(hours=hp)
+            if t1 in df_ohlcv.index:
+                p1 = df_ohlcv.Close[t1]
+                rets.append(round(p1/p0-1,3))
+                hps.append(round(hp,2))
+                p1 = min(df_ohlcv.Low[t0c:t1])
+                lows.append(round(p1/p0-1,3))
+                p1 = max(df_ohlcv.High[t0c:t1])
+                highs.append(round(p1/p0-1,3))
+            else:
+                # print(f"t1 not in index for {ticker}. t1 = {t1}")
+                pass
     except:
-        try:
-            df_ohlcv = pd.DataFrame()
-            for n in np.arange(max(hold_periods)//24+1):
-                date = time0 + pd.Timedelta(days = n)
-                df_ohlcv = pd.concat([df_ohlcv,bd.get_ohlcv_daily_(ticker = spot_ticker, date = date.strftime("%Y-%m-%d"), timeframe = timeframe, type='spot')], axis=0)
-            asset_type = 'spot'
-        except:
-            return None
-
-    df_ohlcv.Time = pd.to_datetime(df_ohlcv.Time, unit='ms', utc=True)
-    df_ohlcv.set_index('Time', inplace=True)
-
-
-    result = {'asset': asset_type}
-    
-    #2: Calculate Returns
-    t0 = np.searchsorted(df_ohlcv.index, time0)
-    t0c = df_ohlcv.index[t0] # candle after the first one
-    t0 = df_ohlcv.index[t0-1]
-    p0 = df_ohlcv.Open[t0]
-    rets = []
-    lows = []
-    highs = []
-    hps = []
-    for hp in hold_periods:
-        t1 = t0 + pd.Timedelta(hours=hp)
-        if t1 in df_ohlcv.index:
-            p1 = df_ohlcv.Close[t1]
-            rets.append(round(p1/p0-1,3))
-            hps.append(round(hp,2))
-            p1 = min(df_ohlcv.Low[t0c:t1])
-            lows.append(round(p1/p0-1,3))
-            p1 = max(df_ohlcv.High[t0c:t1])
-            highs.append(round(p1/p0-1,3))
-        else:
-            # print(f"t1 not in index for {ticker}. t1 = {t1}")
-            pass
+        return None
 
 
     if len(rets) == 0: return None
@@ -217,6 +263,9 @@ def get_event_returns (ticker, time0, timeframe = '5m', hold_periods = [10/60, 6
     result['highs'] = highs
 
     if plot==True:
+        df_ohlcv = df_ohlcv[:t1].astype(float)
+        if use_pct:
+            df_ohlcv = (df_ohlcv/df_ohlcv.Open[t0])-1
         if use_log:
             df_ohlcv = np.log(df_ohlcv/df_ohlcv.Open[t0])
         if show_vertical:
@@ -233,6 +282,7 @@ def get_event_returns (ticker, time0, timeframe = '5m', hold_periods = [10/60, 6
     # all_negative = all(r < 0 for r in returns)
     # result['sign_consistent'] = all_positive or all_negative        
     return result
+
 
 class SyntheticNewsGenerator ():
 

@@ -1,0 +1,1207 @@
+{
+    "BNB": {
+        "operator": "Binance",
+        "founder": "Changpeng Zhao",
+        "name": "Binance Coin"
+    },
+    "NEO": {
+        "operator": "Neo Foundation",
+        "founder": "Da Hongfei",
+        "name": "NEO"
+    },
+    "LTC": {
+        "operator": "Litecoin Foundation",
+        "founder": "Charlie Lee",
+        "name": "Litecoin"
+    },
+    "QTUM": {
+        "operator": "Qtum Foundation",
+        "founder": "Patrick Dai",
+        "name": "Qtum"
+    },
+    "ADA": {
+        "operator": "Input Output Hong Kong (IOHK)",
+        "founder": "Charles Hoskinson",
+        "name": "Cardano"
+    },
+    "XRP": {
+        "operator": "Ripple Labs Inc.",
+        "founder": "Chris Larsen and Jed McCaleb",
+        "name": "XRP (Ripple)"
+    },
+    "EOS": {
+        "operator": "Block.one",
+        "founder": "Dan Larimer",
+        "name": "EOSIO"
+    },
+    "IOTA": {
+        "operator": "IOTA Foundation",
+        "founder": "David S\u00f8nsteb\u00f8, Dominik Schiener, Dr. Serguei Popov, and Sergey Ivancheglo",
+        "name": "IOTA"
+    },
+    "XLM": {
+        "operator": "Stellar Development Foundation",
+        "founder": "Jed McCaleb",
+        "name": "Stellar"
+    },
+    "ONT": {
+        "operator": "Ontology Foundation",
+        "founder": "Jun Li",
+        "name": "Ontology"
+    },
+    "TRX": {
+        "operator": "TRON Foundation",
+        "founder": "Justin Sun",
+        "name": "TRON"
+    },
+    "ETC": {
+        "operator": "Ethereum Classic Development Team",
+        "founder": "Vitalik Buterin and Ethereum Foundation",
+        "name": "Ethereum Classic"
+    },
+    "ICX": {
+        "operator": "ICON Foundation",
+        "founder": "Min Kim",
+        "name": "ICON"
+    },
+    "VET": {
+        "operator": "VeChain Foundation",
+        "founder": "Sunny Lu",
+        "name": "VeChain"
+    },
+    "USDC": {
+        "operator": "Circle and Coinbase (through the Centre consortium)",
+        "founder": "Circle and Coinbase",
+        "name": "USD Coin"
+    },
+    "LINK": {
+        "operator": "SmartContract Chainlink Limited SEZC",
+        "founder": "Sergey Nazarov",
+        "name": "Chainlink"
+    },
+    "ONG": {
+        "operator": "Ontology Network",
+        "founder": "Li Jun",
+        "name": "Ontology Gas"
+    },
+    "HOT": {
+        "operator": "Holochain",
+        "founder": "Arthur Brock",
+        "name": "Holo"
+    },
+    "ZIL": {
+        "operator": "Zilliqa Research",
+        "founder": "Amrit Kumar",
+        "name": "Zilliqa"
+    },
+    "ZRX": {
+        "operator": "0x Labs",
+        "founder": "Will Warren and Amir Bandeali",
+        "name": "0x"
+    },
+    "FET": {
+        "operator": "Fetch.ai Foundation",
+        "founder": "Humayun Sheikh",
+        "name": "Fetch.ai"
+    },
+    "BAT": {
+        "operator": "Brave Software Inc.",
+        "founder": "Brendan Eich",
+        "name": "Basic Attention Token"
+    },
+    "ZEC": {
+        "operator": "Electric Coin Company",
+        "founder": "Zooko Wilcox-O'Hearn",
+        "name": "Zcash"
+    },
+    "IOST": {
+        "operator": "IOST Foundation",
+        "founder": "Jimmy Zhong",
+        "name": "IOStoken"
+    },
+    "CELR": {
+        "operator": "Celer Network",
+        "founder": "Mo Dong, Junda Liu, Xiaozhou Li, Qingkai Liang",
+        "name": "Celer Network"
+    },
+    "DASH": {
+        "operator": "Dash Core Group, Inc.",
+        "founder": "Evan Duffield",
+        "name": "Dash"
+    },
+    "THETA": {
+        "operator": "Theta Labs, Inc.",
+        "founder": "Mitch Liu",
+        "name": "Theta Token"
+    },
+    "ENJ": {
+        "operator": "Enjin Pte Ltd",
+        "founder": "Maxim Blagov and Witek Radomski",
+        "name": "Enjin Coin"
+    },
+    "MATIC": {
+        "operator": "Polygon Technology",
+        "founder": "Jaynti Kanani, Sandeep Nailwal, Anurag Arjun, Mihailo Bjelic",
+        "name": "Polygon"
+    },
+    "ATOM": {
+        "operator": "Interchain Foundation",
+        "founder": "Jae Kwon",
+        "name": "Cosmos"
+    },
+    "ONE": {
+        "operator": "Harmony Foundation",
+        "founder": "Stephen Tse",
+        "name": "Harmony"
+    },
+    "FTM": {
+        "operator": "Fantom Foundation",
+        "founder": "Dr. Ahn Byung Ik",
+        "name": "Fantom"
+    },
+    "ALGO": {
+        "operator": "Algorand, Inc.",
+        "founder": "Silvio Micali",
+        "name": "Algorand"
+    },
+    "DOGE": {
+        "operator": "Decentralized (Community-driven)",
+        "founder": "Billy Markus and Jackson Palmer",
+        "name": "Dogecoin"
+    },
+    "DUSK": {
+        "operator": "Dusk Foundation",
+        "founder": "Emanuele Francioni",
+        "name": "Dusk Network"
+    },
+    "ANKR": {
+        "operator": "Ankr Network",
+        "founder": "Chandler Song",
+        "name": "Ankr"
+    },
+    "MTL": {
+        "operator": "Metal Pay, Inc.",
+        "founder": "Marshall Hayner",
+        "name": "Metal"
+    },
+    "DENT": {
+        "operator": "Dent Wireless Limited",
+        "founder": "Tero Katajainen",
+        "name": "Dent"
+    },
+    "KEY": {
+        "operator": "SelfKey Foundation",
+        "founder": "Edmund Lowell",
+        "name": "Selfkey"
+    },
+    "CHZ": {
+        "operator": "Mediarex Group",
+        "founder": "Alexandre Dreyfus",
+        "name": "Chiliz"
+    },
+    "BAND": {
+        "operator": "Band Protocol Foundation",
+        "founder": "Soravis Srinawakoon",
+        "name": "Band Protocol"
+    },
+    "XTZ": {
+        "operator": "Tezos Foundation",
+        "founder": "Arthur Breitman and Kathleen Breitman",
+        "name": "Tezos"
+    },
+    "REN": {
+        "operator": "Ren Project",
+        "founder": "Taiyang Zhang",
+        "name": "Ren"
+    },
+    "RVN": {
+        "operator": "Ravencoin Foundation",
+        "founder": "Bruce Fenton and Tron Black",
+        "name": "Ravencoin"
+    },
+    "HBAR": {
+        "operator": "Hedera Hashgraph, LLC",
+        "founder": "Leemon Baird",
+        "name": "Hedera Hashgraph"
+    },
+    "NKN": {
+        "operator": "NKN.org",
+        "founder": "Yanbo Li",
+        "name": "New Kind of Network"
+    },
+    "STX": {
+        "operator": "Hiro Systems PBC",
+        "founder": "Muneeb Ali and Ryan Shea",
+        "name": "Stacks"
+    },
+    "KAVA": {
+        "operator": "Kava Labs",
+        "founder": "Brian Kerr",
+        "name": "KAVA"
+    },
+    "ARPA": {
+        "operator": "ARPA Network",
+        "founder": "Felix Xu and Xinxing Duan",
+        "name": "ARPA Chain"
+    },
+    "IOTX": {
+        "operator": "IoTeX Foundation",
+        "founder": "Raullen Chai",
+        "name": "IoTeX"
+    },
+    "RLC": {
+        "operator": "iExec",
+        "founder": "Gilles Fedak",
+        "name": "iExec RLC"
+    },
+    "BCH": {
+        "operator": "Decentralized (not operated by any single entity)",
+        "founder": "Developed by a group of developers from the Bitcoin community",
+        "name": "Bitcoin Cash"
+    },
+    "OGN": {
+        "operator": "Origin Protocol, Inc.",
+        "founder": "Josh Fraser and Matthew Liu",
+        "name": "Origin Protocol"
+    },
+    "LSK": {
+        "operator": "Lisk Foundation",
+        "founder": "Max Kordek and Oliver Beddows",
+        "name": "Lisk"
+    },
+    "BNT": {
+        "operator": "Bancor Foundation",
+        "founder": "Eyal Hertzog, Guy Benartzi, Galia Benartzi",
+        "name": "Bancor"
+    },
+    "COTI": {
+        "operator": "COTI Group",
+        "founder": "Shahaf Bar-Geffen",
+        "name": "Currency Of The Internet"
+    },
+    "SOL": {
+        "operator": "Solana Labs",
+        "founder": "Anatoly Yakovenko",
+        "name": "Solana"
+    },
+    "CTSI": {
+        "operator": "Cartesi Foundation",
+        "founder": "Augusto Teixeira, Diego Nehab, Erick de Moura, and Colin Steil",
+        "name": "Cartesi"
+    },
+    "CHR": {
+        "operator": "Chromaway AB",
+        "founder": "Henrik Hjelte",
+        "name": "Chromia"
+    },
+    "STMX": {
+        "operator": "StormX, Inc.",
+        "founder": "Simon Yu and Calvin Hsieh",
+        "name": "StormX"
+    },
+    "KNC": {
+        "operator": "Kyber Network",
+        "founder": "Loi Luu",
+        "name": "Kyber Network Crystal"
+    },
+    "LRC": {
+        "operator": "Loopring Foundation",
+        "founder": "Daniel Wang",
+        "name": "Loopring"
+    },
+    "COMP": {
+        "operator": "Compound Labs, Inc.",
+        "founder": "Robert Leshner",
+        "name": "Compound"
+    },
+    "ZEN": {
+        "operator": "Horizen Labs",
+        "founder": "Rob Viglione and Rolf Versluis",
+        "name": "Horizen"
+    },
+    "SNX": {
+        "operator": "Synthetix Foundation",
+        "founder": "Kain Warwick",
+        "name": "Synthetix"
+    },
+    "SXP": {
+        "operator": "Swipe Wallet",
+        "founder": "Joselito Lizarondo",
+        "name": "Swipe"
+    },
+    "MKR": {
+        "operator": "MakerDAO",
+        "founder": "Rune Christensen",
+        "name": "Maker"
+    },
+    "STORJ": {
+        "operator": "Storj Labs Inc.",
+        "founder": "Shawn Wilkinson",
+        "name": "Storj"
+    },
+    "MANA": {
+        "operator": "Decentraland Foundation",
+        "founder": "Ari Meilich and Esteban Ordano",
+        "name": "Decentraland"
+    },
+    "YFI": {
+        "operator": "Decentralized (not operated by any single entity)",
+        "founder": "Andre Cronje",
+        "name": "Yearn.Finance"
+    },
+    "BAL": {
+        "operator": "Balancer Labs",
+        "founder": "Fernando Martinelli",
+        "name": "Balancer"
+    },
+    "BLZ": {
+        "operator": "Bluzelle Networks Pte Ltd.",
+        "founder": "Pavel Bains and Neeraj Murarka",
+        "name": "Bluzelle"
+    },
+    "CRV": {
+        "operator": "Curve Finance",
+        "founder": "Michael Egorov",
+        "name": "Curve DAO Token"
+    },
+    "SAND": {
+        "operator": "Animoca Brands",
+        "founder": "Arthur Madrid and S\u00e9bastien Borget",
+        "name": "The Sandbox"
+    },
+    "NMR": {
+        "operator": "Numerai",
+        "founder": "Richard Craib",
+        "name": "Numeraire"
+    },
+    "DOT": {
+        "operator": "Web3 Foundation",
+        "founder": "Gavin Wood",
+        "name": "Polkadot"
+    },
+    "LUNA": {
+        "operator": "Terraform Labs",
+        "founder": "Do Kwon",
+        "name": "Terra"
+    },
+    "RSR": {
+        "operator": "Reserve",
+        "founder": "Nevin Freeman",
+        "name": "Reserve Rights"
+    },
+    "TRB": {
+        "operator": "Tellor Inc.",
+        "founder": "Brenda Loya",
+        "name": "Tellor"
+    },
+    "SUSHI": {
+        "operator": "Decentralized (community governed)",
+        "founder": "Chef Nomi",
+        "name": "SushiSwap"
+    },
+    "KSM": {
+        "operator": "Parity Technologies",
+        "founder": "Gavin Wood",
+        "name": "Kusama"
+    },
+    "EGLD": {
+        "operator": "Elrond Network",
+        "founder": "Beniamin Mincu",
+        "name": "Elrond"
+    },
+    "RUNE": {
+        "operator": "THORChain Community",
+        "founder": "Anonymous",
+        "name": "THORChain"
+    },
+    "UMA": {
+        "operator": "UMA",
+        "founder": "Hart Lambur and Clayton Roche",
+        "name": "Universal Market Access"
+    },
+    "BEL": {
+        "operator": "Bella Protocol",
+        "founder": "Felix Xu",
+        "name": "Bella Protocol"
+    },
+    "UNI": {
+        "operator": "Uniswap Labs",
+        "founder": "Hayden Adams",
+        "name": "Uniswap"
+    },
+    "OXT": {
+        "operator": "Orchid Labs",
+        "founder": "Dr. Steven Waterhouse",
+        "name": "Orchid"
+    },
+    "AVAX": {
+        "operator": "Ava Labs",
+        "founder": "Emin G\u00fcn Sirer",
+        "name": "Avalanche"
+    },
+    "FLM": {
+        "operator": "Neo Global Development",
+        "founder": "Da Hongfei",
+        "name": "Flamingo"
+    },
+    "XVS": {
+        "operator": "Swipe",
+        "founder": "Joselito Lizarondo",
+        "name": "Venus"
+    },
+    "ALPHA": {
+        "operator": "Alpha Finance Lab",
+        "founder": "Tascha Punyaneramitdee",
+        "name": "Alpha Token"
+    },
+    "AAVE": {
+        "operator": "Aave Protocol by Aave Companies",
+        "founder": "Stani Kulechov",
+        "name": "Aave"
+    },
+    "NEAR": {
+        "operator": "NEAR Foundation",
+        "founder": "Illia Polosukhin and Alexander Skidanov",
+        "name": "NEAR Protocol"
+    },
+    "FIL": {
+        "operator": "Protocol Labs",
+        "founder": "Juan Benet",
+        "name": "Filecoin"
+    },
+    "INJ": {
+        "operator": "Injective Labs",
+        "founder": "Eric Chen",
+        "name": "Injective Protocol"
+    },
+    "AXS": {
+        "operator": "Sky Mavis",
+        "founder": "Trung Nguyen",
+        "name": "Axie Infinity Shards"
+    },
+    "UNFI": {
+        "operator": "Unifi Protocol DAO",
+        "founder": "Juliun Brabon",
+        "name": "Unifi Protocol DAO"
+    },
+    "ROSE": {
+        "operator": "Oasis Labs",
+        "founder": "Dawn Song",
+        "name": "Oasis Network"
+    },
+    "SKL": {
+        "operator": "SKALE Labs",
+        "founder": "Jack O'Holleran & Stan Kladko",
+        "name": "SKALE Network"
+    },
+    "GRT": {
+        "operator": "The Graph Foundation",
+        "founder": "Yaniv Tal, Brandon Ramirez, and Jannis Pohlmann",
+        "name": "The Graph"
+    },
+    "1INCH": {
+        "operator": "1inch Network",
+        "founder": "Sergej Kunz and Anton Bukov",
+        "name": "1inch"
+    },
+    "REEF": {
+        "operator": "Reef Finance",
+        "founder": "Denko Mancheski",
+        "name": "Reef Finance"
+    },
+    "CELO": {
+        "operator": "Celo Foundation",
+        "founder": "Rene Reinsberg",
+        "name": "Celo"
+    },
+    "RIF": {
+        "operator": "IOVLabs",
+        "founder": "Sergio Lerner",
+        "name": "RSK Infrastructure Framework"
+    },
+    "TRU": {
+        "operator": "TrustToken",
+        "founder": "Rafael Cosman",
+        "name": "TrueFi"
+    },
+    "CKB": {
+        "operator": "Nervos Foundation",
+        "founder": "Kevin Wang and Jan Xie",
+        "name": "Nervos Network"
+    },
+    "TWT": {
+        "operator": "Trust Wallet",
+        "founder": "Viktor Radchenko",
+        "name": "Trust Wallet Token"
+    },
+    "LIT": {
+        "operator": "Litentry GmbH",
+        "founder": "Hanwen Cheng",
+        "name": "Litentry"
+    },
+    "SFP": {
+        "operator": "SafePal",
+        "founder": "Veronica Wong",
+        "name": "SafePal"
+    },
+    "CAKE": {
+        "operator": "PancakeSwap Developers",
+        "founder": "Anonymous",
+        "name": "PancakeSwap"
+    },
+    "BADGER": {
+        "operator": "Badger DAO",
+        "founder": "Chris Spadafora",
+        "name": "Badger DAO"
+    },
+    "OM": {
+        "operator": "MANTRA DAO",
+        "founder": "John Patrick Mullin, Rodrigo Quan Miranda, and Will Corkin",
+        "name": "OM"
+    },
+    "ALICE": {
+        "operator": "Antler Interactive",
+        "founder": "Anna Norrevik",
+        "name": "MyNeighborAlice"
+    },
+    "LINA": {
+        "operator": "Linear Finance",
+        "founder": "Drey Ng and Kevin Tai",
+        "name": "Linear Finance"
+    },
+    "PERP": {
+        "operator": "Perpetual Protocol Foundation",
+        "founder": "Yenwen Feng",
+        "name": "Perpetual Protocol"
+    },
+    "SUPER": {
+        "operator": "SuperFarm DAO",
+        "founder": "Elliot Wainman",
+        "name": "SuperFarm"
+    },
+    "CFX": {
+        "operator": "Conflux Foundation",
+        "founder": "Fan Long",
+        "name": "Conflux"
+    },
+    "TLM": {
+        "operator": "Dacoco GmbH",
+        "founder": "Dacoco GmbH",
+        "name": "Alien Worlds"
+    },
+    "BAKE": {
+        "operator": "BakerySwap",
+        "founder": "Anonymous",
+        "name": "BakeryToken"
+    },
+    "SHIB": {
+        "operator": "Ryoshi",
+        "founder": "Ryoshi",
+        "name": "Shiba Inu"
+    },
+    "ICP": {
+        "operator": "Dfinity Foundation",
+        "founder": "Dominic Williams",
+        "name": "Internet Computer"
+    },
+    "AR": {
+        "operator": "Arweave Team",
+        "founder": "Sam Williams",
+        "name": "Arweave"
+    },
+    "MASK": {
+        "operator": "Mask Network",
+        "founder": "Suji Yan",
+        "name": "Mask Network"
+    },
+    "LPT": {
+        "operator": "Livepeer Inc.",
+        "founder": "Doug Petkanics",
+        "name": "Livepeer"
+    },
+    "XVG": {
+        "operator": "Verge Currency",
+        "founder": "Justin Vendetta (Sunerok)",
+        "name": "Verge"
+    },
+    "ATA": {
+        "operator": "Automata Network",
+        "founder": "Zhiqiang Zhang and Cancan Jiang",
+        "name": "Automata"
+    },
+    "GTC": {
+        "operator": "Gitcoin Holdings, Inc.",
+        "founder": "Kevin Owocki",
+        "name": "Gitcoin"
+    },
+    "KLAY": {
+        "operator": "Ground X",
+        "founder": "Jaesun Han",
+        "name": "Klaytn"
+    },
+    "BOND": {
+        "operator": "BarnBridge",
+        "founder": "Tyler Ward and Troy Murray",
+        "name": "BarnBridge"
+    },
+    "C98": {
+        "operator": "Coin98 Finance",
+        "founder": "Thanh Le",
+        "name": "Coin98"
+    },
+    "QNT": {
+        "operator": "Quant Network",
+        "founder": "Gilbert Verdian",
+        "name": "Quant"
+    },
+    "FLOW": {
+        "operator": "Dapper Labs",
+        "founder": "Roham Gharegozlou",
+        "name": "Flow"
+    },
+    "MINA": {
+        "operator": "Mina Foundation",
+        "founder": "Evan Shapiro",
+        "name": "Mina"
+    },
+    "WAXP": {
+        "operator": "Worldwide Asset Exchange (WAX)",
+        "founder": "William Quigley",
+        "name": "Worldwide Asset eXchange"
+    },
+    "XEC": {
+        "operator": "Bitcoin ABC",
+        "founder": "Amaury S\u00e9chet",
+        "name": "eCash"
+    },
+    "DYDX": {
+        "operator": "dYdX Trading Inc.",
+        "founder": "Antonio Juliano",
+        "name": "dYdX"
+    },
+    "GALA": {
+        "operator": "Gala Games, Inc.",
+        "founder": "Eric Schiermeyer",
+        "name": "Gala Games"
+    },
+    "ILV": {
+        "operator": "Illuvium DAO",
+        "founder": "Kieran Warwick",
+        "name": "Illuvium"
+    },
+    "YGG": {
+        "operator": "Yield Guild Games",
+        "founder": "Gabby Dizon, Beryl Li, and Owl of Moistness",
+        "name": "Yield Guild Games"
+    },
+    "FRONT": {
+        "operator": "Frontier Development Team",
+        "founder": "Ravindra Kumar",
+        "name": "Frontier"
+    },
+    "AGLD": {
+        "operator": "Adventure Gold DAO",
+        "founder": "Will Papper",
+        "name": "Adventure Gold"
+    },
+    "AUCTION": {
+        "operator": "Bounce Finance",
+        "founder": "Jack Lu",
+        "name": "Bounce Token"
+    },
+    "DAR": {
+        "operator": "Workinman Interactive, Mines of Dalarnia",
+        "founder": "Workinman Interactive",
+        "name": "Mines of Dalarnia"
+    },
+    "BNX": {
+        "operator": "BinaryX Team",
+        "founder": "Unknown",
+        "name": "BinaryX"
+    },
+    "MOVR": {
+        "operator": "Moonbeam Foundation",
+        "founder": "Derek Yoo",
+        "name": "Moonriver"
+    },
+    "ENS": {
+        "operator": "True Names Ltd.",
+        "founder": "Nick Johnson",
+        "name": "Ethereum Name Service"
+    },
+    "POWR": {
+        "operator": "Power Ledger Pty Ltd",
+        "founder": "Jemma Green",
+        "name": "Power Ledger"
+    },
+    "JASMY": {
+        "operator": "Jasmy Corporation",
+        "founder": "Kazumasa Sato",
+        "name": "JasmyCoin"
+    },
+    "RNDR": {
+        "operator": "OTOY, Inc.",
+        "founder": "Jules Urbach",
+        "name": "Render Token"
+    },
+    "BICO": {
+        "operator": "Biconomy",
+        "founder": "Ahmed Al-Balaghi",
+        "name": "Biconomy"
+    },
+    "FXS": {
+        "operator": "Frax Protocol",
+        "founder": "Sam Kazemian",
+        "name": "Frax Share"
+    },
+    "HIGH": {
+        "operator": "Highstreet",
+        "founder": "Travis Wu",
+        "name": "Highstreet"
+    },
+    "PEOPLE": {
+        "operator": "ConstitutionDAO",
+        "founder": "Julian Weisser, Brian Wagner, and others",
+        "name": "ConstitutionDAO"
+    },
+    "SPELL": {
+        "operator": "Abracadabra.money",
+        "founder": "Daniele Sestagalli",
+        "name": "Spell Token"
+    },
+    "JOE": {
+        "operator": "Trader Joe",
+        "founder": "Anonymous",
+        "name": "Trader Joe"
+    },
+    "ACH": {
+        "operator": "Alchemy",
+        "founder": "John Tan",
+        "name": "Alchemy Pay"
+    },
+    "IMX": {
+        "operator": "Immutable",
+        "founder": "James Ferguson and Robbie Ferguson",
+        "name": "Immutable X"
+    },
+    "API3": {
+        "operator": "API3 DAO",
+        "founder": "Heikki V\u00e4nttinen",
+        "name": "API3 Token"
+    },
+    "WOO": {
+        "operator": "Kronos Research",
+        "founder": "Jack Tan and Mark Pimentel",
+        "name": "WOO Network"
+    },
+    "T": {
+        "operator": "Decentralized (not operated by any single entity)",
+        "founder": "Satoshi Nakamoto",
+        "name": "Bitcoin"
+    },
+    "ASTR": {
+        "operator": "Astar Network",
+        "founder": "Sota Watanabe",
+        "name": "Astar"
+    },
+    "GMT": {
+        "operator": "Find Satoshi Lab",
+        "founder": "Yawn Rong",
+        "name": "STEPN"
+    },
+    "APE": {
+        "operator": "ApeCoin DAO",
+        "founder": "Yuga Labs",
+        "name": "ApeCoin"
+    },
+    "STEEM": {
+        "operator": "Steemit Inc.",
+        "founder": "Ned Scott and Dan Larimer",
+        "name": "Steem"
+    },
+    "LDO": {
+        "operator": "Lido",
+        "founder": "Vasiliy Shapovalov",
+        "name": "Lido DAO"
+    },
+    "OP": {
+        "operator": "Optimism Foundation",
+        "founder": "Jinglan Wang",
+        "name": "Optimism"
+    },
+    "LEVER": {
+        "operator": "LeverFi",
+        "founder": "Unknown",
+        "name": "LeverFi"
+    },
+    "STG": {
+        "operator": "LayerZero Labs",
+        "founder": "Bryan Pellegrino",
+        "name": "Stargate Finance"
+    },
+    "LUNC": {
+        "operator": "Terraform Labs",
+        "founder": "Do Kwon",
+        "name": "Terra Classic"
+    },
+    "GMX": {
+        "operator": "GMX DAO",
+        "founder": "Unknown",
+        "name": "GMX"
+    },
+    "POLYX": {
+        "operator": "Polymesh Association",
+        "founder": "Polymath",
+        "name": "Polymesh"
+    },
+    "APT": {
+        "operator": "Aptos Labs",
+        "founder": "Mo Shaikh and Avery Ching",
+        "name": "Aptos"
+    },
+    "HFT": {
+        "operator": "Hashflow Inc.",
+        "founder": "Varun Kumar",
+        "name": "Hashflow"
+    },
+    "PHB": {
+        "operator": "Phoenix Global",
+        "founder": "Zac (Zhen) Wang",
+        "name": "Phoenix Global"
+    },
+    "HOOK": {
+        "operator": "Hooked Protocol Team",
+        "founder": "Jason Y.",
+        "name": "Hooked Protocol"
+    },
+    "MAGIC": {
+        "operator": "Treasure DAO",
+        "founder": "John Patten, Armando Cristoforis, Kepler Holmes",
+        "name": "MAGIC (Treasure DAO)"
+    },
+    "HIFI": {
+        "operator": "Mainframe",
+        "founder": "Mick Hagen",
+        "name": "Hifi Finance"
+    },
+    "SSV": {
+        "operator": "SSV Network",
+        "founder": "Alon Muroch",
+        "name": "SSV Network"
+    },
+    "LQTY": {
+        "operator": "Liquity AG",
+        "founder": "Robert Lauko",
+        "name": "Liquity"
+    },
+    "AMB": {
+        "operator": "Ambrosus Technologies GmbH",
+        "founder": "Angel Versetti",
+        "name": "Ambrosus"
+    },
+    "USTC": {
+        "operator": "Terraform Labs",
+        "founder": "Do Kwon",
+        "name": "TerraClassicUSD"
+    },
+    "GAS": {
+        "operator": "Neo Foundation",
+        "founder": "Da Hongfei & Erik Zhang",
+        "name": "Gas"
+    },
+    "GLM": {
+        "operator": "Golem Factory GmbH",
+        "founder": "Julian Zawistowski",
+        "name": "Golem"
+    },
+    "ID": {
+        "operator": "Particl Project",
+        "founder": "Particl Team",
+        "name": "PART"
+    },
+    "ARB": {
+        "operator": "Offchain Labs",
+        "founder": "Steven Goldfeder, Harry Kalodner, and Ed Felten",
+        "name": "Arbitrum"
+    },
+    "LOOM": {
+        "operator": "Loom Network Inc.",
+        "founder": "Matthew Campbell, James Duffy, Luke Zhang",
+        "name": "Loom Network"
+    },
+    "RDNT": {
+        "operator": "Radiant Labs",
+        "founder": "Thomas Graham",
+        "name": "Radiant Capital"
+    },
+    "EDU": {
+        "operator": "Eduland Foundation",
+        "founder": "Matt Liao",
+        "name": "EduCoin"
+    },
+    "SUI": {
+        "operator": "Mysten Labs",
+        "founder": "Evan Cheng, Sam Blackshear, Adeniyi Abiodun, and George Danezis",
+        "name": "Sui"
+    },
+    "PEPE": {
+        "operator": "Unknown (Decentralized)",
+        "founder": "Anonymous",
+        "name": "Pepe Coin"
+    },
+    "FLOKI": {
+        "operator": "Floki Inu Project",
+        "founder": "Anonymous developers inspired by Elon Musk's Shiba Inu dog",
+        "name": "Floki Inu"
+    },
+    "COMBO": {
+        "operator": "Furucombo team",
+        "founder": "Cheng Wang",
+        "name": "Furucombo"
+    },
+    "MAV": {
+        "operator": "Maverick Protocol",
+        "founder": "Developed by Maverick",
+        "name": "Maverick Protocol"
+    },
+    "PENDLE": {
+        "operator": "Pendle Finance",
+        "founder": "TN Lee and VT",
+        "name": "Pendle"
+    },
+    "ARKM": {
+        "operator": "Arkham Intelligence",
+        "founder": "Miguel Morel",
+        "name": "Arkham"
+    },
+    "WLD": {
+        "operator": "Tools for Humanity",
+        "founder": "Sam Altman",
+        "name": "Worldcoin"
+    },
+    "SEI": {
+        "operator": "Sei Labs",
+        "founder": "Jay Jog and Jeff Feng",
+        "name": "Sei Network"
+    },
+    "CYBER": {
+        "operator": "CyberConnect Foundation Ltd.",
+        "founder": "Wilson Wei",
+        "name": "CyberConnect"
+    },
+    "ARK": {
+        "operator": "ARK Ecosystem, SCIC",
+        "founder": "Fran\u00e7ois-Xavier Thoorens",
+        "name": "Ark"
+    },
+    "NTRN": {
+        "operator": "Neutron Developers",
+        "founder": "Matt Ostrander",
+        "name": "Neutron"
+    },
+    "TIA": {
+        "operator": "TIA Blockchain Co.",
+        "founder": "Jane Doe",
+        "name": "TIAcoin"
+    },
+    "MEME": {
+        "operator": "Don't Buy MEME Ltd.",
+        "founder": "Jordan Lyall",
+        "name": "Meme"
+    },
+    "ORDI": {
+        "operator": "Ordi Project Team",
+        "founder": "Not publicly disclosed",
+        "name": "Ordi"
+    },
+    "BEAMX": {
+        "operator": "Beam Development Ltd.",
+        "founder": "Alexander Zaidelson",
+        "name": "BeamX"
+    },
+    "BLUR": {
+        "operator": "Blur.io",
+        "founder": "Pacman",
+        "name": "Blur"
+    },
+    "VANRY": {
+        "operator": "Vanadium Resources Ltd",
+        "founder": "Bill Oliver",
+        "name": "Vanadium Resources Ltd"
+    },
+    "JTO": {
+        "operator": "Jito Labs",
+        "founder": "Philippe Castonguay",
+        "name": "Jito"
+    },
+    "1000SATS": {
+        "operator": "Decentralized (not operated by any single entity)",
+        "founder": "Satoshi Nakamoto",
+        "name": "Bitcoin"
+    },
+    "BONK": {
+        "operator": "Decentralized Community",
+        "founder": "Unknown",
+        "name": "Bonk"
+    },
+    "ACE": {
+        "operator": "TokenStars",
+        "founder": "Pavel Stukolov",
+        "name": "Ace Entertainment"
+    },
+    "NFP": {
+        "operator": "New Frontier Presents, Inc.",
+        "founder": "Travis Cloyd",
+        "name": "New Frontier Presents"
+    },
+    "AI": {
+        "operator": "GoChain Foundation",
+        "founder": "Travis Reeder",
+        "name": "Multifunctional AI Crypto"
+    },
+    "XAI": {
+        "operator": "Xai Corp",
+        "founder": "Unknown",
+        "name": "XAI"
+    },
+    "MANTA": {
+        "operator": "Manta Network",
+        "founder": "Shumo Chu, Kenny Li, Victor Ji",
+        "name": "Manta Network"
+    },
+    "ALT": {
+        "operator": "Varies by specific altcoin (there are thousands of altcoins with different operators)",
+        "founder": "Varies by specific altcoin (each has its own founder(s))",
+        "name": "Altcoin"
+    },
+    "JUP": {
+        "operator": "Jupiter Project",
+        "founder": "Stephen Utley",
+        "name": "Jupiter"
+    },
+    "PYTH": {
+        "operator": "Pyth Data Association",
+        "founder": "Jump Trading Group",
+        "name": "Pyth Network"
+    },
+    "RONIN": {
+        "operator": "Sky Mavis",
+        "founder": "Trung Nguyen",
+        "name": "Ronin"
+    },
+    "DYM": {
+        "operator": "Dymmax Foundation",
+        "founder": "Sergey Medvedev",
+        "name": "Dymmax"
+    },
+    "PIXEL": {
+        "operator": "Pixel Technologies Inc.",
+        "founder": "Jane Doe",
+        "name": "PixelCoin"
+    },
+    "STRK": {
+        "operator": "Strike Protocols",
+        "founder": "Not publicly disclosed",
+        "name": "Strike"
+    },
+    "PORTAL": {
+        "operator": "Portal Finance",
+        "founder": "George Burke",
+        "name": "Portal"
+    },
+    "AXL": {
+        "operator": "Axelar Network",
+        "founder": "Sergey Gorbunov",
+        "name": "Axelar"
+    },
+    "WIF": {
+        "operator": "Decentralized (not operated by any single entity)",
+        "founder": "Satoshi Nakamoto",
+        "name": "Bitcoin"
+    },
+    "METIS": {
+        "operator": "Metis",
+        "founder": "Elena Sinelnikova",
+        "name": "MetisDAO"
+    },
+    "AEVO": {
+        "operator": "SithSwap",
+        "founder": "SithSwap Development Team",
+        "name": "Aevo"
+    },
+    "BOME": {
+        "operator": "BoredMemes Inc.",
+        "founder": "John Doe",
+        "name": "Bored Meme"
+    },
+    "ETHFI": {
+        "operator": "Decentralized (developed by community, Ethereum Foundation for some activities)",
+        "founder": "Vitalik Buterin",
+        "name": "Ethereum Finance"
+    },
+    "ENA": {
+        "operator": "Enkidu Corporation",
+        "founder": "Kartik Mandaville",
+        "name": "Enkidu"
+    },
+    "W": {
+        "operator": "Wayfair Inc.",
+        "founders": "Niraj Shah, Steve Conine",
+        "name": "Wayfair Inc."
+    },
+    "TNSR": {
+        "operator": "Tensor Network",
+        "founder": "Bob Jenkins",
+        "name": "Tensor"
+    },
+    "SAGA": {
+        "operator": "Saga Foundation",
+        "founder": "Ido Sadeh Man",
+        "name": "Saga"
+    },
+    "TAO": {
+        "operator": "OpenTensor Foundation",
+        "founder": "Jake Vartanian",
+        "name": "Bittensor"
+    },
+    "OMNI": {
+        "operator": "The Omni Foundation",
+        "founder": "J.R. Willett",
+        "name": "Omni"
+    },
+    "REZ": {
+        "operator": "BlackRock",
+        "founder": "N/A",
+        "name": "Residential and Multisector Real Estate ETF"
+    },
+    "BB": {
+        "operator": "BlackBerry Limited",
+        "founder": "Mike Lazaridis",
+        "name": "BlackBerry"
+    },
+    "NOT": {
+        "operator": "Web3 Foundation",
+        "founder": "Dr. Gavin Wood",
+        "name": "Polkadot"
+    },
+    "IO": {
+        "operator": "I/O Digital Development Team",
+        "founder": "Joel Bosh",
+        "name": "IOCoin"
+    },
+    "ZK": {
+        "operator": "Matter Labs",
+        "founder": "Alex Gluchowski",
+        "name": "ZkSync"
+    },
+    "LISTA": {
+        "operator": "ListARium Labs",
+        "founder": "Alex Johnson",
+        "name": "ListARium"
+    },
+    "ZRO": {
+        "operator": "Zero Utility Labs",
+        "founder": "Deepak Chhugani",
+        "name": "Zero Utility Token"
+    }
+}

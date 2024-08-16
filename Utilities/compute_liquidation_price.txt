@@ -1,0 +1,25 @@
+Computing the liquidation price for the isolated margin liquidation Price
+
+1. IMR = 1 / Leverage
+
+2. Initial Margin = Quantity * Entry Price * IMR
+
+3. Liquidation Price ~= (Entry Price) - Initial Margin / Quantity = ( (Entry Price * Quantity) - Initial Margin ) / Quantity
+
+
+For LONG:
+
+		Liq. Price ~= Entry Price * (1 - 1 / Leverage)
+
+		for conservative estimates, Liq. Price = Liq. Price * 1.005
+
+For SHORT:
+
+		Liq. Price ~= Entry Price * (1 + 1 / Leverage)
+
+		for conservative estimates, Liq. Price = Liq. Price * 0.995
+
+
+How much margin to add for a target liquidation price
+
+Margin To Add = (Entry Price - Target Liquidation Price) * Quantity - Initial Margin

@@ -17,7 +17,7 @@ import datetime
 
 
 # Sampling
-def getCrossingEvents (feat, df_ohlcv,  thres, crossing, mid, minVol = None, vol = None):
+def getCrossingEvents (feat, df_ohlcv,  thres, crossing, mid=0, minVol = None, vol = None):
     if crossing == 'outward':
         if mid is None: mid = feat.quantile(0.50)        
         if thres >= mid:
@@ -51,9 +51,9 @@ def getCrossingEvents_dynamicExit(feat, df_ohlcv, entry_thres, exit_thres1, entr
     trades = pd.concat([entry, exit], axis = 0).sort_index()
     trades = trades[trades.type != trades.type.shift()]
     if len(trades):
-        if trades.type[0]=='exit': trades = trades.iloc[1:]
+        if trades.type.iloc[0]=='exit': trades = trades.iloc[1:]
     if len(trades):
-        if trades.type[-1]=='entry': trades = trades.iloc[:-1]
+        if trades.type.iloc[-1]=='entry': trades = trades.iloc[:-1]
 
     events = trades[trades.type=='entry'].copy()
     events['t1'] = trades[trades.type=='exit'].index

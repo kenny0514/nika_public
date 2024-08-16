@@ -13,6 +13,13 @@ import ccxt.async_support as ccxt_async
 import asyncio
 import creds
 
+
+''' 
+ticker = 'BTC'
+symbol = 'BTC/USDT' for spot, 'BTC/USDT:USDT' for futures
+
+'''
+
 BASE_URL = "https://data.binance.vision/data/"
 
 class BinanceData ():
@@ -22,6 +29,41 @@ class BinanceData ():
         else:
             self.ccxt = ccxt_async.binance(config={'enableRateLimit': False,'options': {'defaultType': 'spot'},})
         self.kaiko = None
+        self.spot_markets = None
+        self.futures_markets = None
+    
+    async def load_markets(self):
+        markets = await self.ccxt.fetch_markets()
+        markets = [market for market in markets if (market['quote']=='USDT')]
+        self.spot_markets = [market['baseId'] for market in markets if (market['type'] == 'spot')]
+        self.futures_markets = [market['baseId'] for market in markets if (market['type'] == 'swap')]
+        del markets        
+
+    async def ticker_to_symbol (self, ticker):
+        spot_symbol, futures_symbol = None, None
+        if self.spot_markets is None:
+            await self.load_markets()
+        if ticker in self.spot_markets:
+            spot_symbol = ticker + "/USDT"
+        if ticker in self.futures_markets:
+            futures_symbol = ticker + "/USDT:USDT" 
+        if ("1000"+ticker) in self.futures_markets:
+            futures_symbol = "1000" + ticker + "/USDT:USDT"
+        return spot_symbol, futures_symbol
+
+    def symbol_to_ticker (self, symbol, type):
+        if type == 'spot':
+            ticker = symbol.replace("/USDT", "")
+        elif type == 'futures':
+            ticker = symbol.replace("/USDT:USDT","")
+            if '1000' in ticker:
+                ticker = ticker.replace("1000","")
+            if ticker in ['DODOX', 'BEAMX', 'LUNA2']:
+                ticker = ticker.replace("2","")
+                ticker = ticker.replace("X","")
+        return ticker
+
+
 
     async def get_tickers (self, include_delisted = False):
         bn_markets = await self.ccxt.fetch_markets()
@@ -31,6 +73,18 @@ class BinanceData ():
         else:
             bn_spot_markets = [market['base'].replace('USDT', "") for market in bn_markets if market['quote'] == 'USDT' and market['spot'] and market['active']]
             bn_futures_markets = [market['base'].replace('USDT', "") for market in bn_markets if market['quote'] == 'USDT' and market['swap'] and market['active']]
+
+        return bn_spot_markets, bn_futures_markets
+
+
+    async def get_symbols (self, include_delisted = False):
+        bn_markets = await self.ccxt.fetch_markets()
+        if include_delisted:
+            bn_spot_markets = [market['symbol'] for market in bn_markets if market['quote'] == 'USDT' and market['spot']]
+            bn_futures_markets = [market['symbol'] for market in bn_markets if market['quote'] == 'USDT' and market['swap']]
+        else:
+            bn_spot_markets = [market['symbol'] for market in bn_markets if market['quote'] == 'USDT' and market['spot'] and market['active']]
+            bn_futures_markets = [market['symbol'] for market in bn_markets if market['quote'] == 'USDT' and market['swap'] and market['active']]
 
         return bn_spot_markets, bn_futures_markets
 
@@ -56,10 +110,15 @@ class BinanceData ():
 # Basic
     
     async def get_ohlcv (self, ticker, asset_type, timeframe, numBars, since = None):
+
+        if since is not None and not isinstance(since, (int, float)):
+            since = int(pd.to_datetime(since, utc=True).timestamp()) * 1000
+
+        spot_symbol, futures_symbol = await self.ticker_to_symbol(ticker)
         if asset_type == 'spot':
-            symbol = ticker + '/USDT'
+            symbol = spot_symbol
         elif asset_type == 'futures':
-            symbol = ticker + '/USDT:USDT'
+            symbol = futures_symbol
         max_retries = 5
         for i in range(max_retries):
             try:
@@ -84,11 +143,58 @@ class BinanceData ():
         for ticker in ticker_list:
             tasks.append(self.get_ohlcv(ticker, asset_type, timeframe, numBars, since))
         dfs = await asyncio.gather(*tasks)
-        df = pd.concat([df[price_type] for df in dfs], axis =1) ## Note: Using Open price!
+        df = pd.concat([df[price_type] for df in dfs if df is not None], axis =1) ## Note: Using Open price!
         df.columns = ticker_list
         df = df.iloc[-numBars:,:]
         return df
 
+    async def get_multi_premium_index (self, symbol_list, timeframe, numBars, since = None, price_type = 'Open'):
+        tasks = []
+        for symbol in symbol_list:
+            tasks.append(self.get_premium_index(symbol, timeframe, numBars, since))
+        dfs = await asyncio.gather(*tasks)
+        df = pd.concat([df[price_type] for df in dfs if df is not None], axis =1) ## Note: Using Open price!
+        df.columns = symbol_list
+        df = df.iloc[-numBars:,:]
+        return df
+
+
+# ------------------------------------------------------------           
+# Future - Spot Spread
+    async def get_spot_futures_spread (self, ticker):
+        spot_symbol, futures_symbol = await self.ticker_to_symbol(ticker)
+        if spot_symbol is not None and futures_symbol is not None:
+            tasks = [self.ccxt.fetch_ticker(spot_symbol), self.ccxt.fetch_ticker(futures_symbol)]
+            spot_price, futures_price = await asyncio.gather(*tasks)
+            spot_price, futures_price = spot_price['last'], futures_price['last']
+            spread_pct = (futures_price - spot_price)/spot_price
+            return spread_pct
+
+
+    async def get_premium_index (self, symbol, timeframe, numBars, since = None):
+
+        if since is not None and not isinstance(since, (int, float)):
+            since = int(pd.to_datetime(since, utc=True).timestamp()) * 1000
+
+        max_retries = 5
+        for i in range(max_retries):
+            try:
+                ohlcv = await self.ccxt.fetch_premium_index_ohlcv(symbol=symbol, timeframe=timeframe, since=since, limit=numBars,)
+                if ohlcv is not None: 
+                    break
+            except Exception as e:
+                print(f"{str(e)} -- Network error encountered. Retrying in {i} seconds...")
+                await asyncio.sleep(i)
+        else:
+            print("Max retries reached. Unable to fetch data.")
+            return None
+
+        # 데이터프레임으로 변환
+        if ohlcv is not None:
+            df = pd.DataFrame(data=ohlcv, columns=['Time', 'Open', 'High', 'Low', 'Close', 'Volume'])
+            df['Time'] = pd.to_datetime(df['Time'], unit='ms', utc=True)
+            df.set_index('Time', inplace=True)          
+            return df        
 
 # ------------------------------------------------------------           
 # 입출금 관련
@@ -135,18 +241,18 @@ class BinanceData ():
         else:
             print(f"Empty df for {ticker}. Look into this.")
 
-    async def get_ohlcv_monthly_full(self, ticker, timeframe, type, start_date, num_threads = 1, output_dir = None):
+    async def get_ohlcv_full(self, ticker, timeframe, type, start_date, num_threads = 1, output_dir = None, freq='monthly'):
         # This function now contains the core logic that was previously in the loop
 
         # Setting
-        base = BASE_URL + "spot/monthly/klines/" if type == 'spot' else BASE_URL + "futures/um/monthly/klines/"
+        base = BASE_URL + f"spot/{freq}/klines/" if type == 'spot' else BASE_URL + f"futures/um/{freq}/klines/"
 
         expected_cols = ['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time', 'quote_volume', 'count', 'taker_buy_volume', 'taker_buy_quote_volume', 'ignore']
         target_cols = ['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time', 'taker_buy_volume']
         rename_cols = ['Time', 'Open', 'High', 'Low', 'Close', 'Volume', 'CloseTime', 'TakerBuyVolume']
 
         # Prepare Monthly Range
-        monthly_range = self._get_date_range('monthly', ticker, start_date)
+        date_range = self._get_date_range(freq, ticker, start_date)
 
         # Gather files in the directory to check if it already exists
         if output_dir is not None:
@@ -159,15 +265,15 @@ class BinanceData ():
                     return      
 
         df_concat = pd.DataFrame()
-        monthly_range = list(reversed(monthly_range))
-        while monthly_range:
+        date_range = list(reversed(date_range))
+        while date_range:
             tasks = []
             dates_to_remove = []
 
             for _ in range(num_threads):
-                if not monthly_range:
+                if not date_range:
                     break
-                date = monthly_range.pop()  # Pop from the end of the reversed list
+                date = date_range.pop()  # Pop from the end of the reversed list
                 path = f"{base}{ticker}/{timeframe}/{ticker}-{timeframe}-{date}.zip"
                 tasks.append(self.download_df(path, expected_cols, target_cols, rename_cols))
                 dates_to_remove.append(date)                
@@ -186,62 +292,10 @@ class BinanceData ():
                 filepath = output_dir + filename
                 df_concat.to_csv(filepath)
                 print(f"{filename} done")
-                return df_concat
+            return df_concat
         else: 
+            print("ohlcv - empty result for ",ticker)
             return None
-
-    async def get_ohlcv_daily_full(self, ticker):
-        # This function now contains the core logic that was previously in the loop
-
-        # Setting
-        base = BASE_URL + "spot/daily/klines/" if self.type == 'spot' else BASE_URL + "futures/um/daily/klines/"
-
-        expected_cols = ['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time', 'quote_volume', 'count', 'taker_buy_volume', 'taker_buy_quote_volume', 'ignore']
-        target_cols = ['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time', 'taker_buy_volume']
-        rename_cols = ['Time', 'Open', 'High', 'Low', 'Close', 'Volume', 'CloseTime', 'TakerBuyVolume']
-
-        # Prepare Monthly Range
-        daily_range = self._get_date_range('daily', ticker)
-
-        # Gather files in the directory to check if it already exists
-        files = [f for f in os.listdir(self.output_dir) if f.endswith('.csv')]
-
-        # Check if the ticker file already exists
-        if any(ticker in file for file in files):
-            print(f'{ticker} already exists in the directory. Skipping...')
-            return
-
-        # Check if the ticker has data for the period
-        if self.latest_start_time is not None:
-            path1 = base + ticker + f"/{self.timeframe}/{ticker}-{self.timeframe}-{self.latest_start_time}.zip"
-            test1 = await self.download_df(path1, expected_cols, target_cols, rename_cols)
-            if test1 is None:
-                print(f'{ticker} data begins after {self.latest_start_time}. Skipping this.')
-                return
-            path2 = base + ticker + f"/{self.timeframe}/{ticker}-{self.timeframe}-{self.end_time}.zip"
-            test2 = await self.download_df(path2, expected_cols, target_cols, rename_cols)      
-            if test2 is None:
-                print(f'{ticker} data ends before {self.end_time}. Skipping this.')
-                return                
-
-        df_concat = pd.DataFrame()
-        daily_range_ticker = daily_range.copy()
-
-        for date in daily_range:
-            path = base + ticker + f"/{self.timeframe}/{ticker}-{self.timeframe}-{date}.zip"
-            result = await self.download_df(path, expected_cols, target_cols, rename_cols)
-            if result is not None:
-                df_concat = pd.concat([df_concat, result], ignore_index=True)
-            else:
-                daily_range_ticker.remove(date)
-
-        if len(df_concat):
-            filename = f"{ticker}_{self.type}_{self.timeframe}_{daily_range_ticker[0].replace('-', '')}_{daily_range_ticker[-1].replace('-', '')}.csv"
-            filepath = self.output_dir + filename
-            df_concat.to_csv(filepath)
-            print(f"{filename} done")
-        else:
-            print(f"Empty df for {ticker}. Look into this.")
 
     async def get_trades_full(self, aggTrades = True, freq = 'monthly', by_date = True, get_zip= False, num_threads = 4):
         assert freq in ['monthly', 'daily'], "freq must be either 'monthly' or 'daily'"
@@ -280,64 +334,56 @@ class BinanceData ():
             else:
                 self._process_ticker_data(ticker, ticker_base, date_range, expected_cols, target_cols)
 
-    async def get_ohlcv_monthly_full_serial (self):
-        
-        # Setting
-        if self.type == 'spot':
-            base = BASE_URL + "spot/monthly/klines/"
-        elif self.type == 'futures':
-            base = BASE_URL + "futures/um/monthly/klines/"
-        
-        expected_cols = ['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time',
-        'quote_volume', 'count', 'taker_buy_volume', 'taker_buy_quote_volume',
-        'ignore']        
-        target_cols = ['open_time','open', 'high', 'low', 'close', 'volume','close_time','taker_buy_volume']
-        rename_cols = ['Time', 'Open', 'High', 'Low', 'Close', 'Volume', 'CloseTime', 'TakerBuyVolume']
-        
+    async def get_premium_full (self, ticker, timeframe, start_date, num_threads = 4, output_dir = None, freq='monthly'):
+
+        base = BASE_URL + f"futures/um/{freq}/premiumIndexKlines/"
+        expected_cols = ['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time', 'quote_volume', 'count', 'taker_buy_volume', 'taker_buy_quote_volume', 'ignore']
+        target_cols = ['open_time', 'open', 'high', 'low', 'close', 'volume']
+        rename_cols = ['Time', 'Open', 'High', 'Low', 'Close', 'Volume']
+
         # Prepare Monthly Range
-        monthly_range = pd.date_range(start=self.start_time, end=self.end_time, freq='MS')
-        monthly_range = [date.strftime('%Y-%m') for date in monthly_range]
+        date_range = self._get_date_range(freq, ticker, start_date)
 
         # Gather files in the directory to check if it already exists
-        files = [f for f in os.listdir(self.output_dir) if f.endswith('.csv')]
-
-        for ticker in self.tickers:
-
-            # Check if the ticker file already exists
-            if any(ticker in file for file in files):
-                print(f'{ticker} already exists in the directory. Skipping...')
-                continue
-
-
-            # Check if the ticker has data for the period I want
-            if self.latest_start_time is not None:
-                path1 = base + ticker + f"/{self.timeframe}/{ticker}-{self.timeframe}-{self.latest_start_time}.zip"
-                test1 = await self.download_df(path1, expected_cols, target_cols, rename_cols)
-                if test1 is None:
-                    print(f'{ticker} data begins after {self.latest_start_time}. Skipping this.')
-                    continue
-
-
-            df_concat = pd.DataFrame()
-
-            monthly_range_ticker = monthly_range.copy()
-
-            for date in monthly_range:  
-
-                path = base + ticker + f"/{self.timeframe}/{ticker}-{self.timeframe}-{date}.zip"
-                result = await self.download_df(path, expected_cols, target_cols, rename_cols)
-                if result is not None:
-                    df_concat = pd.concat([df_concat, result], ignore_index=True)
-                else:
-                    monthly_range_ticker.remove(date)
-
-            if len(df_concat):
-                filename = f"{ticker}_{self.type}_{self.timeframe}_{monthly_range_ticker[0].replace('-', '')}_{monthly_range_ticker[-1].replace('-', '')}.csv"            
-                filepath = self.output_dir + filename                        
-                df_concat.to_csv(filepath)
-                print(f"{ticker} done")
+        if output_dir is not None:
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)       
             else:
-                print(f"Empty df for {ticker}. Look into this.")
+                files = [f for f in os.listdir(output_dir) if f.endswith('.csv')]
+                if any(f"{ticker}_{type}" in file for file in files):
+                    print(f'{ticker} already exists in the directory. Skipping...')
+                    # return      
+
+        df_concat = pd.DataFrame()
+        date_range = list(reversed(date_range))
+        while date_range:
+            tasks = []
+            dates_to_remove = []
+
+            for _ in range(num_threads):
+                if not date_range:
+                    break
+                date = date_range.pop()  # Pop from the end of the reversed list
+                path = f"{base}{ticker}/{timeframe}/{ticker}-{timeframe}-{date}.zip"
+                tasks.append(self.download_df(path, expected_cols, target_cols, rename_cols))
+                dates_to_remove.append(date)                
+            
+            results = await asyncio.gather(*tasks)
+            for date, result in zip(dates_to_remove, results):
+                if result is None: continue
+                df_concat = pd.concat([df_concat, result], ignore_index=True)
+
+        if len(df_concat)>0:
+            if output_dir is not None:
+                if not os.path.exists(output_dir):
+                    os.makedirs(output_dir)       
+                filename = f"{ticker}_premium_{timeframe}.csv"
+                filepath = output_dir + filename
+                df_concat.to_csv(filepath)
+                print(f"{filename} done")
+            return df_concat
+        else: 
+            return None        
 
     def _get_date_range(self, freq, ticker, start_time):
 
@@ -398,7 +444,7 @@ class BinanceData ():
         result = await self.download_df(path, expected_cols, target_cols)
         return result
 
-    async def get_ohlcv_daily_single (self, ticker, start_date, timeframe, type, num_days = 1, use_async = False):
+    async def get_ohlcv_daily_single (self, ticker, date, timeframe, type, num_days = 1):
         base = BASE_URL + "spot/daily/klines/" if type == 'spot' else BASE_URL + "futures/um/daily/klines/"
 
         expected_cols = ['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time', 'quote_volume', 'count', 'taker_buy_volume', 'taker_buy_quote_volume', 'ignore']
@@ -406,11 +452,10 @@ class BinanceData ():
         rename_cols = ['Time', 'Open', 'High', 'Low', 'Close', 'Volume', 'CloseTime', 'TakerBuyVolume']
 
         df_ohlcv = pd.DataFrame()
-        date = start_date
         for day in range(num_days):
             date += pd.Timedelta(days=day)
             path = base + ticker + f"/{timeframe}/{ticker}-{timeframe}-{date.strftime('%Y-%m-%d')}.zip"
-            df = await self.download_df(path, expected_cols, target_cols, rename_cols, use_async = use_async)
+            df = await self.download_df(path, expected_cols, target_cols, rename_cols)
             df_ohlcv = pd.concat([df_ohlcv, df], axis = 0)
         if len(df_ohlcv):
             df_ohlcv.set_index('Time', inplace=True, drop=True)

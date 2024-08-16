@@ -154,7 +154,7 @@ class UpbitData ():
         response = eval(requests.get(url, params = params).text)
         df = pd.DataFrame(response)
         df.index = df['market']
-        df.index = df.index.str.replace("KRW-","")
+        df.index = df.index.str.replace ("KRW-","")
         return df
     
     async def get_coin_status(self, ticker):
